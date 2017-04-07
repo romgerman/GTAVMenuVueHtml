@@ -1,0 +1,277 @@
+h1
+{
+	font-size: 35px;
+	color: #fff;
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+h3
+{
+	font-size: 16px;
+	font-weight: 500;
+	text-transform: uppercase;
+}
+
+input:focus { outline:0; }
+
+b { font-weight: bold; }
+
+p
+{
+	font-size: 16px;
+	line-height: 22px;
+}
+
+.right { float: right; }
+
+/* ------ POPUP MENU ------ */
+
+.popup-menu
+{
+	width: 380px;
+	background: rgba(0, 0, 0, 0.6);
+	background: linear-gradient(to bottom,  rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.5) 100%);
+	box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.2)
+}
+
+.popup-menu:hover
+{
+	cursor: default;
+}
+
+.popup-menu .header
+{
+
+}
+
+.popup-menu .header h1
+{
+	padding: 24px 12px;
+	background: rgb(30,87,153);
+	background: linear-gradient(45deg,  rgba(30,87,153,1) 0%,rgba(11,80,147,1) 0%,rgba(88,132,188,1) 100%);
+}
+
+/* header styles */
+
+/* http://www.colorzilla.com/gradient-editor/#135299+0,3873aa+30,467baa+32,6088af+70,6c8eb2+72,5f89b5+88,7594b7+90,668cba+100 */
+.popup-menu .header .blue
+{
+	background: rgb(19,82,153);
+	background: linear-gradient(45deg,  rgba(19,82,153,1) 0%,rgba(56,115,170,1) 30%,rgba(70,123,170,1) 32%,rgba(96,136,175,1) 70%,rgba(108,142,178,1) 72%,rgba(95,137,181,1) 88%,rgba(117,148,183,1) 90%,rgba(102,140,186,1) 100%);
+}
+
+/* header styles end */
+
+.popup-menu .header h3
+{
+	padding: 8px 12px;
+	color: #ccc;
+	background: rgba(0, 0, 0, 0.8);
+}
+
+.popup-menu > ul > li
+{
+	position: relative;
+	padding: 10px;
+	font-size: 16px;
+	color: #D4D5D6;
+}
+
+.popup-menu > ul > li:hover
+{
+	color: #fff;
+	background: rgba(150, 150, 150, 0.7);
+}
+
+.popup-menu > ul > li span
+{
+	display: inline-block;
+}
+
+.popup-menu > ul > li span:last-child
+{
+	float: right;
+}
+
+.popup-menu > ul > li span img
+{
+	max-width: 32px;
+	max-height: 28px
+}
+
+.popup-menu > ul > .active, .popup-menu > ul > .active:hover
+{
+	color: #111;
+	background: rgba(255,255,255,1);
+	background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 100%);
+}
+
+/* item styles */
+
+.popup-menu ul .button
+{
+	font-weight: bold;
+}
+
+.popup-menu ul .green
+{
+	background: rgba(195, 227, 143, 0.2);
+}
+
+.popup-menu ul .green.active, .popup-menu ul .green.active:hover
+{
+	color: #fff;
+	background: rgba(115,166,40,1);
+background: linear-gradient(to right, rgba(115,166,40,1) 0%, rgba(115,166,40,0.8) 100%);
+}
+
+.popup-menu ul .red
+{
+	background: rgba(247, 64, 77, 0.2);
+}
+
+.popup-menu ul .red.active, .popup-menu ul .red.active:hover
+{
+	color: #fff;
+	background: rgba(242,67,67,1);
+background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 100%);
+}
+
+.popup-menu ul .gray
+{
+	background: rgba(212, 213, 214, 0.2);
+}
+
+.popup-menu ul .gray.active, .popup-menu ul .gray.active:hover
+{
+	color: #111;
+	background: #fff;
+}
+
+/* item styles end */
+
+.popup-menu .scroll-line
+{
+	width: 100%;
+	height: 32px;
+	background: rgba(0, 0, 0, 0.4) url('../img/popup-menu-arrows.png') center center no-repeat;
+}
+
+/* help */
+
+.popup-menu .help
+{
+	padding: 10px;
+	font-size: 16px;
+	color: #C4C4C4;
+	border-top: 2px solid #f5f5f5;
+}
+
+.popup-menu .help p
+{
+	font-size: 15px;
+	line-height: 19px
+}
+
+/* stats */
+
+.popup-menu .stats
+{
+	border-top: 2px solid rgba(255, 255, 255, 0.2);
+	padding: 10px;
+	background: rgba(0,0,0,0.4);
+	color: #ccc
+}
+
+.popup-menu .stats div
+{
+	margin-bottom: 12px;
+}
+
+.popup-menu .stats div:last-child
+{
+	margin-bottom: 0
+}
+
+.popup-menu .stats div .stage
+{
+	position: relative;
+	display: block;
+	width: 100px;
+	float: right;
+	margin-top: 5px;
+}
+
+.popup-menu .stats div .stage .level
+{
+	margin-right: 2px;
+	background: rgba(255, 255, 255, 0.6);
+	height: 8px;
+	float: left;
+}
+
+.popup-menu .stats div .stage .level:last-child
+{
+	margin-right: 0
+}
+
+.popup-menu .stats div .stage .value
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	height: 8px;
+	background: rgba(255, 255, 255, 0.9);
+}
+
+/* selection item */
+
+.popup-menu .selection
+{
+	position: relative;
+}
+
+.popup-menu .selection li
+{
+	position: absolute;
+	right: 10px;
+	top: 0;
+	display: none;
+}
+
+.popup-menu .selection > .active
+{
+	display: block;
+}
+
+.popup-menu .selection > .active:before
+{
+	content: '';
+	position: absolute;
+	top: 2px;
+	left: -15px;
+	width: 10px;
+	height: 14px;
+	background: url('../img/popup-menu-arrow-left.png') no-repeat;
+}
+
+.popup-menu .selection > .active:after
+{
+	content: '';
+	position: absolute;
+	top: 2px;
+	right: -15px;
+	width: 10px;
+	height: 14px;
+	background: url('../img/popup-menu-arrow-right.png') no-repeat;
+}
+
+.popup-menu ul .active div span .selection .active:before
+{
+	background: url('../img/popup-menu-arrow-left-active.png') no-repeat;
+}
+
+.popup-menu ul .active div span .selection .active:after
+{
+	background: url('../img/popup-menu-arrow-right-active.png') no-repeat;
+}

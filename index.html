@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/reset.css" />
+	<link rel="stylesheet" type="text/css" href="css/menu.css" />
+
+	<style type="text/css">
+	body
+	{
+		font-family: Arial;
+		background: url('testback.jpg');
+		overflow: hidden;
+	}
+
+	#container
+	{
+		width: 1020px;
+		margin: 0 auto;
+	}
+
+	.popup-menu
+	{
+		margin: 200px auto;
+	}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<div class="popup-menu">
+			<div class="header">
+				<h1>{{ menu.title }}</h1>
+				<h3>
+					<span v-html="menu.subtitle"></span>
+					<span class="right">{{ menu.index + 1 }} / {{ menu.items.length }}</span>
+				</h3>
+				<div class="clear"></div>
+			</div>
+
+			<ul>
+				<li v-for="(item, index) in menu.items" v-if="item.visible" v-bind:class="[item.style, { active: menu.index == index }]" v-on:click="processClick(index)">
+					<div v-if="Object.prototype.toString.call(item.value) !== '[object Array]'">
+						<span v-if="item.value">{{ item.key }}</span>
+						<span v-if="item.value" v-html="item.value"></span>
+						<div v-else>{{ item.key }}</div>
+					</div>
+					<div v-else>
+						<span>{{ item.key }}</span>
+						<span><selection v-bind:list="item.value" v-bind:index="item.index"></selection></span>
+					</div>
+				</li>
+			</ul>
+
+			<div class="scroll-line" v-if="menu.items.length > menu.limit"></div>
+			<div class="help" v-if="help"><p>{{ help }}</p></div>
+			<div class="stats" v-if="stats">
+				<div v-for="item in stats">
+					<span>{{ item.name }}</span>
+					<stage v-bind:levels="item.levels"
+						   v-bind:value="item.value"
+						   v-bind:width="item.width">
+					</stage>
+				</div>
+			</div>
+		</div>
+
+		<template id="selection">
+			<ul class="selection">
+				<li v-for="(item, ind) in list" v-bind:class="{ active: index == ind }">{{ item }}</li>
+			</ul>
+		</template>
+
+		<template id="stage">
+			<div class="stage" v-bind:style="{ width: width + 'px' }">
+				<div class="level" v-for="level in levels"
+								   v-bind:style="{ width: (width / levels - 2) + 'px' }">
+				</div>
+				<div class="value" v-if="value"
+								   v-for="level in valueCount"
+								   v-bind:style="{ width: computeValueWidth(level) + 'px',
+								   				   left: (level - 1) * (computeValueWidth(level - 1) + 2) + 'px'}">
+				</div>
+			</div>
+		</template>
+	</div>
+
+	<script type="text/javascript" src="js/vue.min.js"></script>
+	<script type="text/javascript" src="js/menu.js"></script>
+
+</body>
+</html>
