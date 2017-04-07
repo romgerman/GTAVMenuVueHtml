@@ -3,7 +3,9 @@
 ### How to interact
 
 Up, Down or Mouse Wheel — select menu item
+
 Left, Right — change item in selection "control"
+
 Enter — open submenu if it exists
 
 ### FAQ
