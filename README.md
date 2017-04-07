@@ -1,5 +1,7 @@
 # GTA V popup menu built on Vue.js
 
+![In action](http://i.imgur.com/CejVRFb.gif)
+
 ### How to interact
 
 Up, Down or Mouse Wheel — select menu item
