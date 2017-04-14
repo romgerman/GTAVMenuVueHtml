@@ -3,12 +3,76 @@ function PopupMenu(t, s, i, l) {
 	this.title = t || '';
 	this.subtitle = s || '&nbsp;';
 	this.limit = l || 7;
-	this.index = 0;
 	this.items = i;
+	this.stats = null;
+	this.slider = null;
+	this.colorPicker = null;
+
+	this.index = 0;
 
 	this.currentItem = function() {
 		return this.items[this.index];
 	};
+
+	this.getStatByIndex = function(index) {
+		return this.stats[index];
+	}
+
+	this.getStatByName = function(name) {
+		this.stats.forEach(function(o) {
+			if (o.name === name)
+				return o;
+		});
+
+		return null;
+	}
+
+	this.setSliderValue = function(val) {
+		if (this.slider)
+			this.slider.value = val;
+	}
+
+	this.nextColorItem = function() {
+		this.colorPicker.index++;
+
+		if (this.colorPicker.index > this.colorPicker.colors.length - 1) {
+			this.colorPicker.index = 0;
+		}
+	}
+
+	this.prevColorItem = function() {
+		this.colorPicker.index--;
+
+		if (this.colorPicker.index < 0) {
+			this.colorPicker.index = this.colorPicker.colors.length - 1;
+		}
+	}
+
+	this.Stats = function(stats) {
+		this.stats = stats;
+
+		return this;
+	}
+
+	this.Slider = function(name, units, value) {
+		this.slider = {
+			name: name || '&nbsp;',
+			units: units || '%',
+			value: value || 0
+		};
+
+		return this;
+	}
+
+	this.ColorPicker = function(name, colors) {
+		this.colorPicker = {
+			name: name,
+			colors: colors,
+			index: 0
+		};
+
+		return this;
+	}
 }
 
 function MenuItem(k, v, s, h, m, c) {
@@ -35,6 +99,17 @@ function MenuSelectionItem(k, v, s, h, i, c) {
 	};
 }
 
+function MenuStatItem(n, v, l, w) {
+	return {
+		name:   n || '',
+		value:  v || 0,
+		levels: l || 1,
+		width:  w || 160
+	};
+}
+
+/* --- TESTING --- */
+
 var subSubMenuInfo = new PopupMenu('Subsub menu', null, [
 	MenuItem('There we go', null, null, null, null, function() { alert("hello boy"); }),
 	MenuItem('Currently no backspace and RMB stuff', null, null, null, true)
@@ -59,17 +134,88 @@ var menuInfo = new PopupMenu('Vinewood Hills, 234', 'buy house', [
 	MenuItem('Buy', null, 'green button', null, submenuInfo),
 	MenuItem('Sell', null, 'red button'),
 	MenuItem('Close menu', null, 'gray'),
-], 5);
+], 5).Stats([
+	MenuStatItem('Engine speed what', 25, 5),
+	MenuStatItem('This', 50)
+]).Slider('Opacity', null, 50).ColorPicker('Colors', [
+	'40BAE3',
+	'6840E3',
+	'30BF7F',
+	'9FF23A',
+	'3AF2EF',
+	'F2713A',
+	'F2463A',
+	'F2F07E',
+	'F255AE',
+	'999095',
+	'40BAE3',
+	'6840E3',
+	'30BF7F',
+	'9FF23A',
+	'3AF2EF',
+	'F2713A',
+	'F2463A',
+	'F2F07E',
+	'F255AE',
+	'999095',
+]);
+
+/* --- END --- */
 
 Vue.component('selection', {
+	template: '#selection',
 	props: {
 		index: {
 			type: Number,
 			default: 0
 		},
 		list: Array
+	}
+});
+
+Vue.component('slider', {
+	template: '#slider',
+	props: {
+		name: String,
+		units: String,
+		value: {
+			type: Number,
+			default: 0
+		}
+	}
+});
+
+Vue.component('colors', {
+	template: '#colors',
+	props: {
+		name: String,
+		colors: Array,
+		index: {
+			type: Number,
+			default: 0
+		}
 	},
-	template: '#selection'
+	methods: {
+		isShowing: function(val) {
+			if (this.index > 7) {
+				var r = this.index - 7;
+
+				if (val < r) {
+					return false;
+				}
+
+				if (val > this.index) {
+					return false;
+				}
+			} else {
+				if (val > 7) {
+					return false;
+				}
+			}
+
+			return true;
+		}
+	}
 });
 
 Vue.component('stage', {
@@ -93,6 +239,12 @@ Vue.component('stage', {
 				return (this.width / this.levels) - 2; // Easy
 			}
 		}
+	},
+	created: function() {
+		this.$nextTick(function() { // Hacks hacks hacks
+			if (this.width === 0)
+				this.width = this.$vnode.elm.parentNode.offsetWidth - 20;
+		});
 	}
 });
 
@@ -101,27 +253,7 @@ var vue = new Vue({
 	data: {
 		menu: menuInfo,
 		menuStack: [],
-		help: null,
-		stats: [
-			{
-				name: 'Top Speed',
-				levels: 1,
-				value: 35,
-				width: 160
-			},
-			{
-				name: 'Braking',
-				levels: 7,
-				value: 76,
-				width: 160
-			},
-			{
-				name: 'Traction',
-				levels: 5,
-				value: 20,
-				width: 160
-			}
-		]
+		help: null
 	},
 	methods: {
 		processClick: function(index) { // Weird but works
@@ -192,10 +324,19 @@ var vue = new Vue({
 			if (vue.menu.currentItem() != null && vue.menu.currentItem().index != null) {
 				if (e.keyCode == 37) { // left
 					vue.selectionItemPrev();
-					vue.stats[0].value--;
+					vue.menu.stats[0].value--;
 				} else if (e.keyCode == 39) { // right
 					vue.selectionItemNext();
-					vue.stats[0].value++;
+					vue.menu.stats[0].value++;
+				}
+			}
+
+			if (vue.menu.colorPicker)
+			{
+				if (e.keyCode == 37) { // left
+					vue.menu.prevColorItem();
+				} else if (e.keyCode == 39) { // right
+					vue.menu.nextColorItem();
 				}
 			}
 

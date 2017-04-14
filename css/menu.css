@@ -54,10 +54,15 @@ p
 /* header styles */
 
 /* http://www.colorzilla.com/gradient-editor/#135299+0,3873aa+30,467baa+32,6088af+70,6c8eb2+72,5f89b5+88,7594b7+90,668cba+100 */
-.popup-menu .header .blue
+.popup-menu .header.blue h1
 {
 	background: rgb(19,82,153);
 	background: linear-gradient(45deg,  rgba(19,82,153,1) 0%,rgba(56,115,170,1) 30%,rgba(70,123,170,1) 32%,rgba(96,136,175,1) 70%,rgba(108,142,178,1) 72%,rgba(95,137,181,1) 88%,rgba(117,148,183,1) 90%,rgba(102,140,186,1) 100%);
+}
+
+.popup-menu .header.blue h3 span
+{
+	color: #3D74B3
 }
 
 /* header styles end */
@@ -155,6 +160,7 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	width: 100%;
 	height: 32px;
 	background: rgba(0, 0, 0, 0.4) url('../img/popup-menu-arrows.png') center center no-repeat;
+	border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 /* help */
@@ -164,7 +170,8 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	padding: 10px;
 	font-size: 16px;
 	color: #C4C4C4;
-	border-top: 2px solid #f5f5f5;
+	background: rgba(0,0,0,0.4);
+	border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .popup-menu .help p
@@ -193,16 +200,22 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	margin-bottom: 0
 }
 
-.popup-menu .stats div .stage
+.popup-menu .stats .stage
+{
+	float: right;
+}
+
+/* stage slider */
+
+.popup-menu .stage
 {
 	position: relative;
 	display: block;
 	width: 100px;
-	float: right;
 	margin-top: 5px;
 }
 
-.popup-menu .stats div .stage .level
+.popup-menu .stage .level
 {
 	margin-right: 2px;
 	background: rgba(255, 255, 255, 0.6);
@@ -210,12 +223,12 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	float: left;
 }
 
-.popup-menu .stats div .stage .level:last-child
+.popup-menu .stage .level:last-child
 {
 	margin-right: 0
 }
 
-.popup-menu .stats div .stage .value
+.popup-menu .stage .value
 {
 	position: absolute;
 	left: 0;
@@ -274,4 +287,101 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 .popup-menu ul .active div span .selection .active:after
 {
 	background: url('../img/popup-menu-arrow-right-active.png') no-repeat;
+}
+
+/* slider block */
+
+.popup-menu .slider
+{
+	padding: 10px;
+	background: rgba(0, 0, 0, 0.4);
+	border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.popup-menu .slider .title
+{
+	position: relative;
+}
+
+.popup-menu .slider .title span
+{
+	display: block;
+	color: #ccc;
+}
+
+.popup-menu .slider .title span:nth-child(1)
+{
+	float: left;
+}
+
+.popup-menu .slider .title span:nth-child(2)
+{
+	float: right;
+}
+
+.popup-menu .slider .title .name
+{
+	position: absolute;
+	left: 0;
+	right: 0;
+	width: 100%;
+	text-align: center;
+}
+
+/* colors selector */
+
+.popup-menu .colors
+{
+	padding: 10px;
+	background: rgba(0, 0, 0, 0.4);
+	border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.popup-menu .colors .title
+{
+	position: relative;
+	margin-bottom: 10px;
+	text-align: center;
+	color: #ccc;
+}
+
+.popup-menu .colors .title:before
+{
+	content: '';
+	position: absolute;
+	top: 1px;
+	left: 0;
+	width: 10px;
+	height: 14px;
+	background: url('../img/popup-menu-arrow-left.png') no-repeat;
+}
+
+.popup-menu .colors .title:after
+{
+	content: '';
+	position: absolute;
+	top: 1px;
+	right: 0;
+	width: 10px;
+	height: 14px;
+	background: url('../img/popup-menu-arrow-right.png') no-repeat;
+}
+
+.popup-menu .colors ul li
+{
+	position: relative;
+	width: 45px;
+	height: 45px;
+	float: left;
+}
+
+.popup-menu .colors ul li.active:before
+{
+	content: '';
+	position: absolute;
+	top: -6px;
+	left: 0;
+	width: 45px;
+	height: 6px;
+	background: #fff
 }
