@@ -1,37 +1,14 @@
-h1
-{
-	font-size: 35px;
-	color: #fff;
-	text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-}
-
-h3
-{
-	font-size: 16px;
-	font-weight: 500;
-	text-transform: uppercase;
-}
-
-input:focus { outline:0; }
-
-b { font-weight: bold; }
-
-p
-{
-	font-size: 16px;
-	line-height: 22px;
-}
-
-.right { float: right; }
-
-/* ------ POPUP MENU ------ */
+/* -------------------------------------------------------------
+-------------------------- POPUP MENU --------------------------
+------------------------------------------------------------- */
 
 .popup-menu
 {
 	width: 380px;
 	background: rgba(0, 0, 0, 0.6);
 	background: linear-gradient(to bottom,  rgba(0,0,0,0.8) 0%,rgba(0,0,0,0.5) 100%);
-	box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.2)
+	box-shadow: 0px 5px 25px rgba(0, 0, 0, 0.2);
+	user-select: none;
 }
 
 .popup-menu:hover
@@ -39,19 +16,31 @@ p
 	cursor: default;
 }
 
-.popup-menu .header
-{
+.popup-menu .right { float: right; }
 
-}
+.popup-menu .header { }
 
 .popup-menu .header h1
 {
 	padding: 24px 12px;
+	font-size: 35px;
+	color: #fff;
 	background: rgb(30,87,153);
 	background: linear-gradient(45deg,  rgba(30,87,153,1) 0%,rgba(11,80,147,1) 0%,rgba(88,132,188,1) 100%);
+	text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
-/* header styles */
+.popup-menu .header h3
+{
+	padding: 8px 12px;
+	font-size: 16px;
+	font-weight: 500;
+	text-transform: uppercase;
+	color: #ccc;
+	background: rgba(0, 0, 0, 0.8);
+}
+
+/* --- HEADER STYLES (make your own here) --- */
 
 /* http://www.colorzilla.com/gradient-editor/#135299+0,3873aa+30,467baa+32,6088af+70,6c8eb2+72,5f89b5+88,7594b7+90,668cba+100 */
 .popup-menu .header.blue h1
@@ -65,14 +54,7 @@ p
 	color: #3D74B3
 }
 
-/* header styles end */
-
-.popup-menu .header h3
-{
-	padding: 8px 12px;
-	color: #ccc;
-	background: rgba(0, 0, 0, 0.8);
-}
+/* --- ITEM LIST STYLES --- */
 
 .popup-menu > ul > li
 {
@@ -111,7 +93,7 @@ p
 	background: linear-gradient(to right, rgba(255,255,255,1) 0%, rgba(255,255,255,0.8) 100%);
 }
 
-/* item styles */
+/* --- ITEM STYLES (make your own here) --- */
 
 .popup-menu ul .button
 {
@@ -127,7 +109,7 @@ p
 {
 	color: #fff;
 	background: rgba(115,166,40,1);
-background: linear-gradient(to right, rgba(115,166,40,1) 0%, rgba(115,166,40,0.8) 100%);
+	background: linear-gradient(to right, rgba(115,166,40,1) 0%, rgba(115,166,40,0.8) 100%);
 }
 
 .popup-menu ul .red
@@ -153,7 +135,7 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	background: #fff;
 }
 
-/* item styles end */
+/* --- SCROLL LINE STYLE --- */
 
 .popup-menu .scroll-line
 {
@@ -163,7 +145,7 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	border-top: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-/* help */
+/* --- HELP BLOCK STYLE --- */
 
 .popup-menu .help
 {
@@ -180,7 +162,7 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	line-height: 19px
 }
 
-/* stats */
+/* --- STATISTICS STYLE --- */
 
 .popup-menu .stats
 {
@@ -205,7 +187,7 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	float: right;
 }
 
-/* stage slider */
+/* --- STAGE BAR STYLE --- */
 
 .popup-menu .stage
 {
@@ -237,7 +219,7 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	background: rgba(255, 255, 255, 0.9);
 }
 
-/* selection item */
+/* --- SELECTION ITEM STYLE --- */
 
 .popup-menu .selection
 {
@@ -265,7 +247,9 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	left: -15px;
 	width: 10px;
 	height: 14px;
-	background: url('../img/popup-menu-arrow-left.png') no-repeat;
+	background-image: url('../img/popup-menu-arrows-r-l.png');
+	background-repeat: no-repeat;
+	background-position: 0 0
 }
 
 .popup-menu .selection > .active:after
@@ -276,20 +260,22 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	right: -15px;
 	width: 10px;
 	height: 14px;
-	background: url('../img/popup-menu-arrow-right.png') no-repeat;
+	background-image: url('../img/popup-menu-arrows-r-l.png');
+	background-repeat: no-repeat;
+	background-position: -30px 0
 }
 
 .popup-menu ul .active div span .selection .active:before
 {
-	background: url('../img/popup-menu-arrow-left-active.png') no-repeat;
+	background-position: -10px 0
 }
 
 .popup-menu ul .active div span .selection .active:after
 {
-	background: url('../img/popup-menu-arrow-right-active.png') no-repeat;
+	background-position: -20px 0
 }
 
-/* slider block */
+/* --- FULLWIDTH BAR STYLE --- */
 
 .popup-menu .slider
 {
@@ -328,7 +314,7 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	text-align: center;
 }
 
-/* colors selector */
+/* --- COLOR SELECTOR STYLE --- */
 
 .popup-menu .colors
 {
@@ -345,26 +331,30 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	color: #ccc;
 }
 
-.popup-menu .colors .title:before
-{
-	content: '';
-	position: absolute;
-	top: 1px;
-	left: 0;
-	width: 10px;
-	height: 14px;
-	background: url('../img/popup-menu-arrow-left.png') no-repeat;
-}
-
+.popup-menu .colors .title:before,
 .popup-menu .colors .title:after
 {
 	content: '';
 	position: absolute;
 	top: 1px;
+	background: url('../img/popup-menu-arrows-r-l.png');
+	background-repeat: no-repeat;
+}
+
+.popup-menu .colors .title:before
+{
+	left: 0;
+	width: 10px;
+	height: 14px;
+	background-position: 0 0;
+}
+
+.popup-menu .colors .title:after
+{
 	right: 0;
 	width: 10px;
 	height: 14px;
-	background: url('../img/popup-menu-arrow-right.png') no-repeat;
+	background-position: -30px 0
 }
 
 .popup-menu .colors ul li
@@ -384,4 +374,69 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	width: 45px;
 	height: 6px;
 	background: #fff
+}
+
+/* --- XY GRID STYLE --- */
+
+.popup-menu .xygrid
+{
+	position: relative;
+	padding: 10px;
+	background: rgba(0, 0, 0, 0.4);
+	border-top: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.popup-menu .xygrid .top,
+.popup-menu .xygrid .bottom,
+.popup-menu .xygrid .left,
+.popup-menu .xygrid .right
+{
+	text-align: center;
+	color: #ccc
+}
+
+.popup-menu .xygrid .top { margin-bottom: 5px }
+.popup-menu .xygrid .bottom { margin-top: 5px }
+
+.popup-menu .xygrid .r,
+.popup-menu .xygrid .l
+{
+	position: absolute;
+	top: 0;
+	width: 30%;
+	height: 100%;
+}
+
+.popup-menu .xygrid .r { left: 0 }
+.popup-menu .xygrid .l { right: 0 }
+
+.popup-menu .xygrid .left,
+.popup-menu .xygrid .right
+{
+	position: absolute;
+	top: 45%;
+}
+
+.popup-menu .xygrid .left {	right: 0; }
+.popup-menu .xygrid .right { left: 0; }
+
+.popup-menu .xygrid .grid
+{
+	position: relative;
+	width: 136px;
+	height: 136px;
+	margin: 0 auto;
+	padding: 0;
+	background: url('../img/xygrid.png') center center no-repeat;
+}
+
+.popup-menu .xygrid .grid .point
+{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 12px;
+	height: 12px;
+	background: #fff;
+	border-radius: 50%;
 }
