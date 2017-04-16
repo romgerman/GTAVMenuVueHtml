@@ -1,42 +1,6 @@
-
-// TEST DATA
-
-var subSubMenuInfo = new PopupMenu('Subsub menu', null, [
-	MenuItem('There we go').Click(function() { alert("Clicked"); }),
-	MenuItem('Currently no backspace and RMB stuff').Back()
-]);
-
-var submenuInfo = new PopupMenu('Submenu title', 'subtitle', [
-	MenuItem('Something', 'LUL'),
-	MenuItem('Computer', 'yeyyeye'),
-	MenuItem('Ayyy', 'lmao'),
-	MenuItem('Nice text', 'actually'),
-	MenuItem('Buy', 'my pants'),
-	MenuItem('Send', 'nudes').Submenu(subSubMenuInfo),
-	MenuItem('Return by pressing this', null, 'Or by pressing Backspace key or RMB button').Back(),
-]);
-
-var menuInfo = new PopupMenu('Vinewood Hills, 234', 'buy house', [
-	MenuItem('Cost', '$10000'),
-	MenuItem('Rooms', 3),
-	MenuItem('Sleeping places', 1, 'Determines how many people can live in this house'),
-	MenuItem('Select style', ['Modern', 'Victorian', 'Vagabond']).SelectionChanged(function(index, name) { console.log(index + ': ' + name); }),
-	MenuItem('Owner', '<img style="margin: -5px -5px 0 0" src="img/429.png" />'),
-	MenuItem('Buy').Style('green button').Submenu(submenuInfo),
-	MenuItem('Sell').Style('red button'),
-	MenuItem('Close menu').Style('gray'),
-], 5).Stats([
-	MenuStatItem('Engine speed what', 25, 5),
-	MenuStatItem('This', 50)
-]).Slider('Opacity', null, 50).ColorPicker('Colors', [
-	'40BAE3', '6840E3', '30BF7F', '9FF23A',
-	'3AF2EF', 'F2713A', 'F2463A', 'F2F07E',
-	'F255AE', '999095', '40BAE3', '6840E3',
-	'30BF7F', '9FF23A', '3AF2EF', 'F2713A',
-	'F2463A', 'F2F07E', 'F255AE', '999095',
-]).XYGrid(0, 0);
-
-// MENU STUFF
+/*
+	--- GTA V POPUP MENU ---
+*/
 
 function PopupMenu(t, s, i, l) {
 	this.title = t || '';
@@ -47,6 +11,7 @@ function PopupMenu(t, s, i, l) {
 	this.slider = null;
 	this.colorPicker = null;
 	this.grid = null;
+	this.style = 'blue';
 
 	this.index = 0;
 
@@ -100,6 +65,40 @@ function PopupMenu(t, s, i, l) {
 		};
 	}
 
+	this.nextSelectionItem = function() {
+		var item = this.currentItem();
+
+		if (Object.prototype.toString.call(item.value) !== '[object Array]')
+			return;
+
+		item.index++;
+
+		if (item.index > item.value.length - 1) {
+			item.index = 0;
+		}
+
+		if ((typeof item.onChange) === 'function') {
+			item.onChange(item.index, item.value[item.index]);
+		}
+	}
+
+	this.prevSelectionItem = function() {
+		var item = this.currentItem();
+
+		if (Object.prototype.toString.call(item.value) !== '[object Array]')
+			return;
+
+		item.index--;
+
+		if (item.index < 0) {
+			item.index = item.value.length - 1;
+		}
+
+		if ((typeof item.onChange) === 'function') {
+			item.onChange(item.index, item.value[item.index]);
+		}
+	}
+
 
 	this.Stats = function(stats) {
 		this.stats = stats;
@@ -136,6 +135,12 @@ function PopupMenu(t, s, i, l) {
 			left: left,
 			right: right
 		};
+
+		return this;
+	}
+
+	this.Style = function(style) {
+		this.style = style || '';
 
 		return this;
 	}
@@ -217,8 +222,8 @@ Vue.component('slider', {
 	}
 });
 
-Vue.component('colors', {
-	template: '#colors',
+Vue.component('color-selector', {
+	template: '#color-selector',
 	props: {
 		name: String,
 		colors: Array,
@@ -340,82 +345,68 @@ function getElementPosition(el) {
 	};
 }
 
-var vue = new Vue({
-	el: '.popup-menu',
-	data: {
-		menu: menuInfo,
-		menuStack: [],
-		help: null
+Vue.component('popup-menu', {
+	template: '#popup-menu',
+	props: {
+		menu: Object
+	},
+	data: function() {
+		return {
+			currentMenu: this.menu,
+			menuStack: [],
+			help: null
+		};
 	},
 	methods: {
-		processClick: function(index) { // Weird but works
-			this.menu.index = index;
+		processClick: function(index) {
+			this.currentMenu.index = index;
 
-			if (this.menu.currentItem().submenu) {
-				if (this.menu.currentItem().submenu === true && this.menuStack.length > 0) {
-					this.menu = this.menuStack.pop();
+			if (this.currentMenu.currentItem().submenu) {
+				if (this.currentMenu.currentItem().submenu === true) {
+					this.returnBack();
 				} else {
-					this.menuStack.push(this.menu);
-					this.menu = this.menu.currentItem().submenu;
-					this.menu.index = 0;
+					this.menuStack.push(this.currentMenu);
+					this.currentMenu = this.currentMenu.currentItem().submenu;
+					this.currentMenu.index = 0;
 				}
 			} else {
-				if (this.menu.currentItem().action !== null
-					&& (typeof this.menu.currentItem().action) == 'function' ) {
-					this.menu.currentItem().action();
+				if (this.currentMenu.currentItem().action !== null
+					&& (typeof this.currentMenu.currentItem().action) == 'function' ) {
+					this.currentMenu.currentItem().action();
 				}
 			}
 		},
-		selectionItemNext() {
-			var item = this.menu.currentItem();
-
-			item.index++;
-
-			if (item.index > item.value.length - 1) {
-				item.index = 0;
-			}
-
-			if (item.onChange) {
-				item.onChange(item.index, item.value[item.index]);
-			}
-		},
-		selectionItemPrev(item) {
-			var item = this.menu.currentItem();
-
-			item.index--;
-
-			if (item.index < 0) {
-				item.index = item.value.length - 1;
-			}
-
-			if (item.onChange) {
-				item.onChange(item.index, item.value[item.index]);
-			}
+		returnBack : function() {
+			if (this.menuStack.length > 0)
+				this.currentMenu = this.menuStack.pop();
 		}
 	},
 	created: function() {
 
-		var limit = this.menu.limit > this.menu.items.length ? this.menu.items.length : this.menu.limit;
+		var self = this;
+		var limit = this.currentMenu.limit > this.currentMenu.items.length ? this.currentMenu.items.length : this.currentMenu.limit;
 
-		if (this.menu.items.length > limit) {
-			for (var i = limit; i < this.menu.items.length; i++)
-				this.menu.items[i].visible = false;
+		if (this.currentMenu.items.length > limit) {
+			for (var i = limit; i < this.currentMenu.items.length; i++)
+				this.currentMenu.items[i].visible = false;
 		}
 
-		window.addEventListener('wheel', function(e) { // Testing. Remove in production
+		window.addEventListener('wheel', function(e) {
 			var delta = e.deltaY || e.detail || e.wheelData;
 
 			if (delta > 0) {
-				vue.menu.index++;
+				self.currentMenu.index++;
 			} else if(delta < 0) {
-				vue.menu.index--;
+				self.currentMenu.index--;
 			}
 		});
 
-		var self = this;
-
 		this.$nextTick(function() { // WARNING: Hardcoded
-			var grid = this._vnode.elm.getElementsByClassName('xygrid')[0].children[1];
+
+			if (this.$vnode.elm.getElementsByClassName('xygrid').length === 0)
+				return;
+
+			var grid = this.$vnode.elm.getElementsByClassName('xygrid')[0].children[1];
 			var clicked = false;
 
 			grid.addEventListener('mousedown', function(e) { // Testing. Remove in production
@@ -425,8 +416,8 @@ var vue = new Vue({
 					var x = e.clientX - pos.x;
 					var y = e.clientY - pos.y;
 
-					if (self.menu.grid && (x < 136 && y < 136)) {
-						self.menu.setGridXY(x / 130, y / 130);
+					if (self.currentMenu.grid && (x < 136 && y < 136)) {
+						self.currentMenu.setGridXY(x / 130, y / 130);
 					}
 
 					clicked = true;
@@ -446,38 +437,39 @@ var vue = new Vue({
 					var x = e.clientX - pos.x;
 					var y = e.clientY - pos.y;
 
-					if (self.menu.grid && (x < 136 && y < 136)) {
-						self.menu.setGridXY(x / 130, y / 130);
+					if (self.currentMenu.grid && (x < 136 && y < 136)) {
+						self.currentMenu.setGridXY(x / 130, y / 130);
 					}
 				}
 			});
 		});
 
-		window.addEventListener('keyup', function(e) { // Testing. Remove in production
+		window.addEventListener('keyup', function(e) {
+
 			if (e.keyCode == 38) { // up
-				vue.menu.index--;
+				self.currentMenu.index--;
 			} else if (e.keyCode == 40) { // down
-				vue.menu.index++;
+				self.currentMenu.index++;
 			} else if (e.keyCode == 13) { // enter
-				vue.processClick(vue.menu.index);
+				self.processClick(self.currentMenu.index);
+			} else if (e.keyCode == 8) { // backspace
+				self.returnBack();
 			}
 
-			if (vue.menu.currentItem() != null && vue.menu.currentItem().index != null) {
+			if (self.currentMenu.currentItem() != null) {
 				if (e.keyCode == 37) { // left
-					vue.selectionItemPrev();
-					vue.menu.stats[0].value--;
+					self.currentMenu.prevSelectionItem();
 				} else if (e.keyCode == 39) { // right
-					vue.selectionItemNext();
-					vue.menu.stats[0].value++;
+					self.currentMenu.nextSelectionItem();
 				}
 			}
 
-			if (vue.menu.colorPicker)
+			if (self.currentMenu.colorPicker) // Testing. Remove in production
 			{
 				if (e.keyCode == 37) { // left
-					vue.menu.prevColorItem();
+					self.currentMenu.prevColorItem();
 				} else if (e.keyCode == 39) { // right
-					vue.menu.nextColorItem();
+					self.currentMenu.nextColorItem();
 				}
 			}
 
@@ -485,47 +477,47 @@ var vue = new Vue({
 		});
 	},
 	watch: {
-		'menu.index': function(val, old) { // Change selected item depending on current index
+		'currentMenu.index': function(val, old) { // Change selected item depending on current index
 
-			if (val > (this.menu.items.length - 1)) {
+			if (val > (this.currentMenu.items.length - 1)) {
 
-				for (var i = 0; i < this.menu.items.length; i++) { // Maybe it possible without loop and additional bindngs
-					if (i >= this.menu.limit) {
-						this.menu.items[i].visible = false;
+				for (var i = 0; i < this.currentMenu.items.length; i++) { // Maybe it possible without loop and additional bindngs
+					if (i >= this.currentMenu.limit) {
+						this.currentMenu.items[i].visible = false;
 					} else {
-						this.menu.items[i].visible = true;
+						this.currentMenu.items[i].visible = true;
 					}
 				}
 
-				this.menu.index = 0;
+				this.currentMenu.index = 0;
 
 				return;
 
 			} else if (val < 0) {
 
-				for (var i = 0; i < this.menu.items.length; i++) {
-					if (this.menu.items.length - i > this.menu.limit) {
-						this.menu.items[i].visible = false;
+				for (var i = 0; i < this.currentMenu.items.length; i++) {
+					if (this.currentMenu.items.length - i > this.currentMenu.limit) {
+						this.currentMenu.items[i].visible = false;
 					} else {
-						this.menu.items[i].visible = true;
+						this.currentMenu.items[i].visible = true;
 					}
 				}
 
-				this.menu.index = this.menu.items.length - 1;
+				this.currentMenu.index = this.currentMenu.items.length - 1;
 
 				return;
 			}
 
-			if (val > (this.menu.limit - 1)) {
-				this.menu.items[val - this.menu.limit].visible = false;
-			} else if ((this.menu.items.length - val) > this.menu.limit) {
-				this.menu.items[val + this.menu.limit].visible = false;
+			if (val > (this.currentMenu.limit - 1)) {
+				this.currentMenu.items[val - this.currentMenu.limit].visible = false;
+			} else if ((this.currentMenu.items.length - val) > this.currentMenu.limit) {
+				this.currentMenu.items[val + this.currentMenu.limit].visible = false;
 			}
 
-			this.menu.items[val].visible = true;
+			this.currentMenu.items[val].visible = true;
 
-			if (this.menu.items[val].help) {
-				this.help = this.menu.items[val].help;
+			if (this.currentMenu.items[val].help) {
+				this.help = this.currentMenu.items[val].help;
 			} else {
 				this.help = null;
 			}

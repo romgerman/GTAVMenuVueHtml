@@ -26,22 +26,34 @@
 	</style>
 </head>
 <body>
+
 	<div id="container">
 
 		<!-- HERE GOES POPUP MENU HTML -->
 
-		<div class="popup-menu">
-			<div class="header blue">
-				<h1>{{ menu.title }}</h1>
+		<popup-menu v-bind:menu="menu"></popup-menu>
+
+		<!-- HERE POPUP MENU HTML ENDS -->
+
+	</div>
+
+	<!-- VUE TEMPLATES -->
+
+	<template id="popup-menu">
+		<div class="popup-menu" v-if="menu">
+			<div v-bind:class="[ 'header', currentMenu.style ]">
+				<h1>{{ currentMenu.title }}</h1>
 				<h3>
-					<span v-html="menu.subtitle"></span>
-					<span class="right">{{ menu.index + 1 }} / {{ menu.items.length }}</span>
+					<span v-html="currentMenu.subtitle"></span>
+					<span class="right">{{ currentMenu.index + 1 }} / {{ currentMenu.items.length }}</span>
 				</h3>
 				<div class="clear"></div>
 			</div>
 
 			<ul>
-				<li v-for="(item, index) in menu.items" v-if="item.visible" v-bind:class="[item.style, { active: menu.index == index }]" v-on:click="processClick(index)">
+				<li v-for="(item, index) in currentMenu.items" v-if="item.visible"
+															   v-bind:class="[item.style, { active: currentMenu.index == index }]"
+															   v-on:click="processClick(index)">
 					<div v-if="Object.prototype.toString.call(item.value) !== '[object Array]'">
 						<span v-if="item.value">{{ item.key }}</span>
 						<span v-if="item.value" v-html="item.value"></span>
@@ -54,23 +66,29 @@
 				</li>
 			</ul>
 
-			<div class="scroll-line" v-if="menu.items.length > menu.limit"></div>
+			<div class="scroll-line" v-if="currentMenu.items.length > currentMenu.limit"></div>
 			<div class="help" v-if="help"><p>{{ help }}</p></div>
-			<div v-if="menu.slider"><slider v-bind:name="menu.slider.name" v-bind:units="menu.slider.units" v-bind:value="menu.slider.value"></slider></div>
-			<div v-if="menu.colorPicker"><colors v-bind:name="menu.colorPicker.name"
-												 v-bind:colors="menu.colorPicker.colors"
-												 v-bind:index="menu.colorPicker.index"></colors>
+			<div v-if="currentMenu.slider">
+				<slider v-bind:name="currentMenu.slider.name"
+						v-bind:units="currentMenu.slider.units"
+						v-bind:value="currentMenu.slider.value"></slider>
 			</div>
-			<div v-if="menu.grid"><xygrid v-bind:x="menu.grid.x"
-										  v-bind:y="menu.grid.y"
-										  v-bind:top="menu.grid.top"
-										  v-bind:bottom="menu.grid.bottom"
-										  v-bind:left="menu.grid.left"
-										  v-bind:right="menu.grid.right"></xygrid>
+			<div v-if="currentMenu.colorPicker">
+				<color-selector v-bind:name="currentMenu.colorPicker.name"
+								v-bind:colors="currentMenu.colorPicker.colors"
+								v-bind:index="currentMenu.colorPicker.index"></color-selector>
+			</div>
+			<div v-if="currentMenu.grid">
+				<xygrid v-bind:x="currentMenu.grid.x"
+						v-bind:y="currentMenu.grid.y"
+						v-bind:top="currentMenu.grid.top"
+						v-bind:bottom="currentMenu.grid.bottom"
+						v-bind:left="currentMenu.grid.left"
+						v-bind:right="currentMenu.grid.right"></xygrid>
 			</div>
 
-			<div class="stats" v-if="menu.stats">
-				<div v-for="item in menu.stats">
+			<div class="stats" v-if="currentMenu.stats">
+				<div v-for="item in currentMenu.stats">
 					<span>{{ item.name }}</span>
 					<stage v-bind:levels="item.levels"
 						   v-bind:value="item.value"
@@ -79,76 +97,74 @@
 				</div>
 			</div>
 		</div>
+	</template>
 
-		<!-- VUE TEMPLATES -->
+	<template id="selection">
+		<ul class="selection">
+			<li v-for="(item, ind) in list" v-bind:class="{ active: index === ind }">{{ item }}</li>
+		</ul>
+	</template>
 
-		<template id="selection">
-			<ul class="selection">
-				<li v-for="(item, ind) in list" v-bind:class="{ active: index === ind }">{{ item }}</li>
+	<template id="stage">
+		<div class="stage" v-bind:style="{ width: width + 'px' }">
+			<div class="level" v-for="level in levels"
+							   v-bind:style="{ width: (width / levels - 2) + 'px' }">
+			</div>
+			<div class="value" v-if="value"
+							   v-for="level in valueCount"
+							   v-bind:style="{ width: computeValueWidth(level) + 'px',
+							   				   left: (level - 1) * (computeValueWidth(level - 1) + 2) + 'px'}">
+			</div>
+			<div class="clear"></div>
+		</div>
+	</template>
+
+	<template id="slider">
+		<div class="slider">
+			<div class="title">
+				<span>{{ 0 + '' + units }}</span>
+				<span>{{ 100 + '' + units }}</span>
+				<span class="name">{{ name }}</span>
+				<div class="clear"></div>
+
+			</div>
+			<stage v-bind:levels="1" v-bind:value="value" v-bind:width="0"></stage>
+		</div>
+	</template>
+
+	<template id="color-selector">
+		<div class="colors">
+			<div class="title">Colors ({{ (index + 1) + ' / ' + colors.length }})</div>
+			<ul>
+				<li v-for="(color, ind) in colors" v-if="isShowing(ind)"
+												   v-bind:style="{ background: '#' + color }"
+												   v-bind:class="{ active: index === ind }"></li>
 			</ul>
-		</template>
+			<div class="clear"></div>
+		</div>
+	</template>
 
-		<template id="stage">
-			<div class="stage" v-bind:style="{ width: width + 'px' }">
-				<div class="level" v-for="level in levels"
-								   v-bind:style="{ width: (width / levels - 2) + 'px' }">
-				</div>
-				<div class="value" v-if="value"
-								   v-for="level in valueCount"
-								   v-bind:style="{ width: computeValueWidth(level) + 'px',
-								   				   left: (level - 1) * (computeValueWidth(level - 1) + 2) + 'px'}">
-				</div>
-				<div class="clear"></div>
+	<template id="xygrid">
+		<div class="xygrid">
+			<div class="top">{{ top }}</div>
+			<div class="grid">
+				<div class="point" v-bind:style="{ left: realX + 'px', top: realY + 'px' }"></div>
 			</div>
-		</template>
-
-		<template id="slider">
-			<div class="slider">
-				<div class="title">
-					<span>{{ 0 + '' + units }}</span>
-					<span>{{ 100 + '' + units }}</span>
-					<span class="name">{{ name }}</span>
-					<div class="clear"></div>
-
-				</div>
-				<stage v-bind:levels="1" v-bind:value="value" v-bind:width="0"></stage>
+			<div class="bottom">{{ bottom }}</div>
+			<div class="r">
+				<div class="left">{{ left }}</div>
 			</div>
-		</template>
-
-		<template id="colors">
-			<div class="colors">
-				<div class="title">Colors ({{ (index + 1) + ' / ' + colors.length }})</div>
-				<ul>
-					<li v-for="(color, ind) in colors" v-if="isShowing(ind)"
-													   v-bind:style="{ background: '#' + color }"
-													   v-bind:class="{ active: index === ind }"></li>
-				</ul>
-				<div class="clear"></div>
+			<div class="l">
+				<div class="right">{{ right }}</div>
 			</div>
-		</template>
+		</div>
+	</template>
 
-		<template id="xygrid">
-			<div class="xygrid">
-				<div class="top">{{ top }}</div>
-				<div class="grid">
-					<div class="point" v-bind:style="{ left: realX + 'px', top: realY + 'px' }"></div>
-				</div>
-				<div class="bottom">{{ bottom }}</div>
-				<div class="r">
-					<div class="left">{{ left }}</div>
-				</div>
-				<div class="l">
-					<div class="right">{{ right }}</div>
-				</div>
-			</div>
-		</template>
-
-		<!-- HERE POPUP MENU HTML ENDS -->
-
-	</div>
+	<!-- END OF VUE TEMPLATES -->
 
 	<script type="text/javascript" src="js/vue.min.js"></script>
 	<script type="text/javascript" src="js/menu.js"></script>
+	<script type="text/javascript" src="js/app.js"></script>
 
 </body>
 </html>
