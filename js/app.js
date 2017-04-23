@@ -31,7 +31,7 @@ var menuInfo = new PopupMenu('Vinewood Hills, 234', 'buy house', [
 	'F255AE', '999095', '40BAE3', '6840E3',
 	'30BF7F', '9FF23A', '3AF2EF', 'F2713A',
 	'F2463A', 'F2F07E', 'F255AE', '999095',
-]).XYGrid(0, 0);
+]).XYGrid(0, 0).ActiveItemChanged(function(index) { console.log(index); });
 
 var app = new Vue({
 	el: '#container',

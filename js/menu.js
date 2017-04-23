@@ -12,6 +12,7 @@ function PopupMenu(t, s, i, l) {
 	this.colorPicker = null;
 	this.grid = null;
 	this.style = 'blue';
+	this.onItemChange = null;
 
 	this.index = 0;
 
@@ -141,6 +142,12 @@ function PopupMenu(t, s, i, l) {
 
 	this.Style = function(style) {
 		this.style = style || '';
+
+		return this;
+	}
+
+	this.ActiveItemChanged = function(callback) {
+		this.onItemChange = callback;
 
 		return this;
 	}
@@ -506,6 +513,10 @@ Vue.component('popup-menu', {
 				this.currentMenu.index = this.currentMenu.items.length - 1;
 
 				return;
+			}
+
+			if ((typeof this.currentMenu.onItemChange) === 'function') {
+				this.currentMenu.onItemChange(this.currentMenu.index);
 			}
 
 			if (val > (this.currentMenu.limit - 1)) {
