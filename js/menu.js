@@ -451,6 +451,11 @@ Vue.component('popup-menu', {
 			});
 		});
 
+		window.addEventListener('contextmenu', function (e) { // right-click
+		    e.preventDefault();
+		    self.returnBack();
+		});
+		
 		window.addEventListener('keyup', function(e) {
 
 			if (e.keyCode == 38) { // up
