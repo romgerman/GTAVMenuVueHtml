@@ -232,6 +232,7 @@ background: linear-gradient(to right, rgba(242,67,67,1) 0%, rgba(242,67,67,0.8) 
 	right: 10px;
 	top: 0;
 	display: none;
+    white-space: nowrap;
 }
 
 .popup-menu .selection > .active
