@@ -11,6 +11,8 @@ Left, Right — change item in selection "control" and change color in color pic
 
 Enter — open submenu if it exists
 
+Backspace, right-click — Go back in menus
+
 ### FAQ
 
 - If you don't know JS or Vue.js then don't bother me I don't know either
