@@ -1,30 +1,44 @@
-/*
-	--- GTA V POPUP MENU ---
-*/
+/* ------------------------------------------------------------
+---------------------- GTA V POPUP MENU -----------------------
+---------------------------------------------------------------
+Original Repo: https://github.com/romgerman/GTAVMenuVueHtml
+------------------------------------------------------------ */
 
-function PopupMenu(t, s, i, l) {
-	this.title = t || '';
-	this.subtitle = s || '&nbsp;';
-	this.limit = l || 7;
-	this.items = i;
-	this.stats = null;
-	this.slider = null;
-	this.colorPicker = null;
-	this.grid = null;
-	this.style = 'blue';
-	this.onItemChange = null;
+class PopupMenu {
 
-	this.index = 0;
+	/**
+	 *
+	 * @param {string} title
+	 * @param {string} subtitle
+	 * @param {MenuItem[]} items
+	 * @param {Number} limit
+	 */
+	constructor(title, subtitle, items, limit) {
+		this.title = title || '';
+		this.subtitle = subtitle || '&nbsp;';
+		this.limit = limit || 7;
+		this.items = items;
+		this.stats = null;
+		this.slider = null;
+		this.colorPicker = null;
+		this.grid = null;
+		this.style = 'blue';
+		this.onItemChange = null;
 
-	this.currentItem = function() {
+		this.index = 0;
+	}
+
+	// methods
+
+	currentItem() {
 		return this.items[this.index];
-	};
+	}
 
-	this.getStatByIndex = function(index) {
+	getStatByIndex(index) {
 		return this.stats[index];
 	}
 
-	this.getStatByName = function(name) {
+	getStatByName(name) {
 		this.stats.forEach(function(o) {
 			if (o.name === name)
 				return o;
@@ -33,12 +47,12 @@ function PopupMenu(t, s, i, l) {
 		return null;
 	}
 
-	this.setSliderValue = function(val) {
+	setSliderValue(value) {
 		if (this.slider)
-			this.slider.value = val;
+			this.slider.value = value;
 	}
 
-	this.nextColorItem = function() {
+	nextColorItem() {
 		this.colorPicker.index++;
 
 		if (this.colorPicker.index > this.colorPicker.colors.length - 1) {
@@ -46,7 +60,7 @@ function PopupMenu(t, s, i, l) {
 		}
 	}
 
-	this.prevColorItem = function() {
+	prevColorItem() {
 		this.colorPicker.index--;
 
 		if (this.colorPicker.index < 0) {
@@ -54,19 +68,19 @@ function PopupMenu(t, s, i, l) {
 		}
 	}
 
-	this.setGridXY = function(x, y) {
+	setGridXY(x, y) {
 		this.grid.x = x;
 		this.grid.y = y;
 	}
 
-	this.getGridXY = function() {
+	getGridXY() {
 		return {
 			x: this.grid.x,
 			y: this.grid.y
 		};
 	}
 
-	this.nextSelectionItem = function() {
+	nextSelectionItem() {
 		var item = this.currentItem();
 
 		if (Object.prototype.toString.call(item.value) !== '[object Array]')
@@ -83,7 +97,7 @@ function PopupMenu(t, s, i, l) {
 		}
 	}
 
-	this.prevSelectionItem = function() {
+	prevSelectionItem() {
 		var item = this.currentItem();
 
 		if (Object.prototype.toString.call(item.value) !== '[object Array]')
@@ -100,14 +114,14 @@ function PopupMenu(t, s, i, l) {
 		}
 	}
 
+	// modular methods
 
-	this.Stats = function(stats) {
+	Stats(stats) {
 		this.stats = stats;
-
 		return this;
 	}
 
-	this.Slider = function(name, units, value) {
+	Slider(name, units, value) {
 		this.slider = {
 			name: name || '&nbsp;',
 			units: units || '%',
@@ -117,7 +131,7 @@ function PopupMenu(t, s, i, l) {
 		return this;
 	}
 
-	this.ColorPicker = function(name, colors) {
+	ColorPicker(name, colors) {
 		this.colorPicker = {
 			name: name,
 			colors: colors,
@@ -127,7 +141,7 @@ function PopupMenu(t, s, i, l) {
 		return this;
 	}
 
-	this.XYGrid = function(x, y, top, bottom, left, right) {
+	XYGrid(x, y, top, bottom, left, right) {
 		this.grid = {
 			x: x || 0,
 			y: y || 0,
@@ -140,71 +154,88 @@ function PopupMenu(t, s, i, l) {
 		return this;
 	}
 
-	this.Style = function(style) {
+	Style(style) {
 		this.style = style || '';
 
 		return this;
 	}
 
-	this.ActiveItemChanged = function(callback) {
+	ActiveItemChanged(callback) {
 		this.onItemChange = callback;
 
 		return this;
 	}
 }
 
-function MenuItem(name, value, help) {
-	return {
-		key:   name,
-		value: value || null,
-		help:  help || null,
-		submenu: null,
-		style:   null,
-		action:  null,
-		visible: true,
-		index: 0,
-		onChange: null,
+class MenuItem {
 
-		Click: function(callback) {
-			this.action = callback;
+	/**
+	 *
+	 * @param {string} name
+	 * @param {string|string[]} value
+	 * @param {string} help
+	 */
+	constructor(name, value, help) {
+		this.key   = name;
+		this.value = value || null;
+		this.help  =  help || null;
+		this.submenu  = null;
+		this.style    = null;
+		this.action   = null;
+		this.visible  = true;
+		this.index    = 0;
+		this.onChange = null;
+	}
 
-			return this;
-		},
+	Click(callback) {
+		this.action = callback;
 
-		Back: function() {
-			this.submenu = true;
+		return this;
+	}
 
-			return this;
-		},
+	Back() {
+		this.submenu = true;
 
-		SelectionChanged: function(callback) {
-			this.onChange = callback;
+		return this;
+	}
 
-			return this;
-		},
+	SelectionChanged(callback) {
+		this.onChange = callback;
 
-		Style: function(style) {
-			this.style = style;
+		return this;
+	}
 
-			return this;
-		},
+	Style(style) {
+		this.style = style;
 
-		Submenu: function(menu) {
-			this.submenu = menu;
+		return this;
+	}
 
-			return this;
-		}
-	};
+	Submenu(menu) {
+		this.submenu = menu;
+
+		return this;
+	}
 }
 
-function MenuStatItem(n, v, l, w) {
-	return {
-		name:   n || '',
-		value:  v || 0,
-		levels: l || 1,
-		width:  w || 160
-	};
+class MenuStatItem {
+
+	/**
+	 *
+	 * @param {string} name
+	 * @param {Number} value
+	 * @param {Number} levels
+	 * @param {Number} width
+	 */
+	constructor(name, value, levels, width) {
+		this.name = name || '';
+		this.value = value || 0;
+		this.levels = levels || 1;
+		this.width = width || 160;
+	}
 }
+
+// VUE COMPONENTS
 
 Vue.component('selection', {
 	template: '#selection',
@@ -286,7 +317,7 @@ Vue.component('xygrid', {
 	},
 	computed: {
 		realX: function() {
-			return 130 * this.x;
+			return 130 * this.x; // TODO: fix grid
 		},
 		realY: function() {
 			return 130 * this.y;
@@ -312,14 +343,14 @@ Vue.component('stage', {
 
 				return rest / 100 * this.width - 2;
 			} else {
-				return (this.width / this.levels) - 2; // Easy
+				return (this.width / this.levels) - 2;
 			}
 		}
 	},
 	created: function() {
 		this.$nextTick(function() { // Hacks hacks hacks
 			if (this.width === 0)
-				this.width = this.$vnode.elm.parentNode.offsetWidth - 20;
+				this.width = this.$vnode.elm.parentNode.offsetWidth - 20; // Hard-coded
 		});
 	}
 });
@@ -366,7 +397,11 @@ Vue.component('popup-menu', {
 	},
 	methods: {
 		processClick: function(index) {
-			this.currentMenu.index = index;
+			// To trigger click event we should click 2 times (like in GTA, according to @rt-2)
+			if (this.currentMenu.index !== index) {
+				this.currentMenu.index = index;
+				return;
+			}
 
 			if (this.currentMenu.currentItem().submenu) {
 				if (this.currentMenu.currentItem().submenu === true) {
@@ -375,10 +410,10 @@ Vue.component('popup-menu', {
 					this.menuStack.push(this.currentMenu);
 					this.currentMenu = this.currentMenu.currentItem().submenu;
 					this.currentMenu.index = 0;
+					this.calculateLimit();
 				}
 			} else {
-				if (this.currentMenu.currentItem().action !== null
-					&& (typeof this.currentMenu.currentItem().action) == 'function' ) {
+				if ((typeof this.currentMenu.currentItem().action) == 'function') {
 					this.currentMenu.currentItem().action();
 				}
 			}
@@ -386,17 +421,22 @@ Vue.component('popup-menu', {
 		returnBack : function() {
 			if (this.menuStack.length > 0)
 				this.currentMenu = this.menuStack.pop();
+		},
+		calculateLimit: function() {
+			// Just to be sure
+			var limit = this.currentMenu.limit > this.currentMenu.items.length ? this.currentMenu.items.length : this.currentMenu.limit;
+
+			if (this.currentMenu.items.length > limit) {
+				for (var i = 0; i < this.currentMenu.items.length; i++) {
+					this.currentMenu.items[i].visible = (i < limit);
+				}
+			}
 		}
 	},
 	created: function() {
 
 		var self = this;
-		var limit = this.currentMenu.limit > this.currentMenu.items.length ? this.currentMenu.items.length : this.currentMenu.limit;
-
-		if (this.currentMenu.items.length > limit) {
-			for (var i = limit; i < this.currentMenu.items.length; i++)
-				this.currentMenu.items[i].visible = false;
-		}
+		this.calculateLimit();
 
 		window.addEventListener('wheel', function(e) {
 			var delta = e.deltaY || e.detail || e.wheelData;
@@ -416,7 +456,7 @@ Vue.component('popup-menu', {
 			var grid = this.$vnode.elm.getElementsByClassName('xygrid')[0].children[1];
 			var clicked = false;
 
-			grid.addEventListener('mousedown', function(e) { // Testing. Remove in production
+			grid.addEventListener('mousedown', function(e) { // Mouse event for xygrid
 				if (e.which === 1) { // LMB
 					var pos = getElementPosition(e.currentTarget);
 
@@ -431,13 +471,13 @@ Vue.component('popup-menu', {
 				}
 			});
 
-			window.addEventListener('mouseup', function(e) {
+			window.addEventListener('mouseup', function(e) { // Mouse event for xygrid
 				if (e.which === 1) { // LMB
 					clicked = false;
 				}
 			});
 
-			grid.addEventListener('mousemove', function(e) {
+			grid.addEventListener('mousemove', function(e) { // Mouse event for xygrid
 				if (clicked) {
 					var pos = getElementPosition(e.currentTarget);
 
@@ -451,11 +491,11 @@ Vue.component('popup-menu', {
 			});
 		});
 
-		window.addEventListener('contextmenu', function (e) { // right-click
+		window.addEventListener('contextmenu', function (e) { // Right-click
 		    e.preventDefault();
 		    self.returnBack();
 		});
-		
+
 		window.addEventListener('keyup', function(e) {
 
 			if (e.keyCode == 38) { // up
@@ -491,28 +531,18 @@ Vue.component('popup-menu', {
 	watch: {
 		'currentMenu.index': function(val, old) { // Change selected item depending on current index
 
-			if (val > (this.currentMenu.items.length - 1)) {
-
-				for (var i = 0; i < this.currentMenu.items.length; i++) { // Maybe it possible without loop and additional bindngs
-					if (i >= this.currentMenu.limit) {
-						this.currentMenu.items[i].visible = false;
-					} else {
-						this.currentMenu.items[i].visible = true;
-					}
+			if (val > (this.currentMenu.items.length - 1)) { // When more than length
+				for (var i = 0; i < this.currentMenu.items.length; i++) {
+					this.currentMenu.items[i].visible = (i < this.currentMenu.limit);
 				}
 
 				this.currentMenu.index = 0;
 
 				return;
 
-			} else if (val < 0) {
-
+			} else if (val < 0) { // When less than 0
 				for (var i = 0; i < this.currentMenu.items.length; i++) {
-					if (this.currentMenu.items.length - i > this.currentMenu.limit) {
-						this.currentMenu.items[i].visible = false;
-					} else {
-						this.currentMenu.items[i].visible = true;
-					}
+						this.currentMenu.items[i].visible = (this.currentMenu.items.length - i <= this.currentMenu.limit);
 				}
 
 				this.currentMenu.index = this.currentMenu.items.length - 1;
@@ -528,6 +558,10 @@ Vue.component('popup-menu', {
 				this.currentMenu.items[val - this.currentMenu.limit].visible = false;
 			} else if ((this.currentMenu.items.length - val) > this.currentMenu.limit) {
 				this.currentMenu.items[val + this.currentMenu.limit].visible = false;
+			}
+
+			if (val < old && (!this.currentMenu.items[val].visible)) { // Scrolling to top above visible item
+				this.currentMenu.items[old + this.currentMenu.limit - 1].visible = false;
 			}
 
 			this.currentMenu.items[val].visible = true;

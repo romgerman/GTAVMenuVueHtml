@@ -1,30 +1,35 @@
 var subSubMenuInfo = new PopupMenu('Subsub menu', null, [
-	MenuItem('There we go').Click(function() { alert("Clicked"); }),
-	MenuItem('Currently backspace and no RMB stuff').Back()
+	new MenuItem('There we go').Click(function() { alert("Clicked"); }),
+	new MenuItem('Currently backspace and no RMB stuff').Back()
 ]);
 
 var submenuInfo = new PopupMenu('Submenu title', 'subtitle', [
-	MenuItem('Something', 'LUL'),
-	MenuItem('Computer', 'yeyyeye'),
-	MenuItem('Ayyy', 'lmao'),
-	MenuItem('Nice text', 'actually'),
-	MenuItem('Buy', 'my pants'),
-	MenuItem('Send', 'nudes').Submenu(subSubMenuInfo),
-	MenuItem('Return by pressing this', null, 'Or by pressing Backspace key or RMB button').Back(),
+	new MenuItem('Something', 'LUL'),
+	new MenuItem('Computer', 'yeyyeye'),
+	new MenuItem('Ayyy', 'lmao'),
+	new MenuItem('Nice text', 'actually'),
+	new MenuItem('Buy', 'my pants'),
+	new MenuItem('What what', 'in the butt'),
+	new MenuItem('TExt'),
+	new MenuItem('More items'),
+	new MenuItem('Even more items'),
+	new MenuItem('Whoooo'),
+	new MenuItem('Send', 'nudes').Submenu(subSubMenuInfo),
+	new MenuItem('Return by pressing this', null, 'Or by pressing Backspace key or RMB button').Back(),
 ]).Style(null);
 
 var menuInfo = new PopupMenu('Vinewood Hills, 234', 'buy house', [
-	MenuItem('Cost', '$10000'),
-	MenuItem('Rooms', 3),
-	MenuItem('Sleeping places', 1, 'Determines how many people can live in this house'),
-	MenuItem('Select style', ['Modern', 'Victorian', 'Vagabond']).SelectionChanged(function(index, name) { console.log(index + ': ' + name); }),
-	MenuItem('Owner', '<img style="margin: -5px -5px 0 0" src="img/429.png" />'),
-	MenuItem('Buy').Style('green button').Submenu(submenuInfo),
-	MenuItem('Sell').Style('red button'),
-	MenuItem('Close menu').Style('gray'),
+	new MenuItem('Cost', '$10000'),
+	new MenuItem('Rooms', 3),
+	new MenuItem('Sleeping places', 1, 'Determines how many people can live in this house'),
+	new MenuItem('Select style', ['Modern', 'Victorian', 'Vagabond']).SelectionChanged(function(index, name) { console.log(index + ': ' + name); }),
+	new MenuItem('Owner', '<img style="margin: -5px -5px 0 0" src="img/429.png" />'),
+	new MenuItem('Buy').Style('green button').Submenu(submenuInfo),
+	new MenuItem('Sell').Style('red button'),
+	new MenuItem('Close menu').Style('gray'),
 ], 5).Stats([
-	MenuStatItem('Engine speed what', 25, 5),
-	MenuStatItem('This', 50)
+	new MenuStatItem('Engine speed what', 25, 5),
+	new MenuStatItem('This', 50)
 ]).Slider('Opacity', null, 50).ColorPicker('Colors', [
 	'40BAE3', '6840E3', '30BF7F', '9FF23A',
 	'3AF2EF', 'F2713A', 'F2463A', 'F2F07E',

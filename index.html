@@ -39,6 +39,8 @@
 
 	<!-- VUE TEMPLATES -->
 
+	<!-- MENU TEMPLATE -->
+
 	<template id="popup-menu">
 		<div class="popup-menu" v-if="menu">
 			<div v-bind:class="[ 'header', currentMenu.style ]">
@@ -99,11 +101,15 @@
 		</div>
 	</template>
 
+	<!-- SELECTION TEMPLATE (with right/left buttons) -->
+
 	<template id="selection">
 		<ul class="selection">
 			<li v-for="(item, ind) in list" v-bind:class="{ active: index === ind }">{{ item }}</li>
 		</ul>
 	</template>
+
+	<!-- STAT ITEM TEMPLATE (small, progress bar) -->
 
 	<template id="stage">
 		<div class="stage" v-bind:style="{ width: width + 'px' }">
@@ -119,6 +125,8 @@
 		</div>
 	</template>
 
+	<!-- PROGRESS BAR TEMPLATE (big stat item) -->
+
 	<template id="slider">
 		<div class="slider">
 			<div class="title">
@@ -132,6 +140,8 @@
 		</div>
 	</template>
 
+	<!-- COLOR SELECTOR TEMPLATE -->
+
 	<template id="color-selector">
 		<div class="colors">
 			<div class="title">Colors ({{ (index + 1) + ' / ' + colors.length }})</div>
@@ -143,6 +153,8 @@
 			<div class="clear"></div>
 		</div>
 	</template>
+
+	<!-- XY GRID -->
 
 	<template id="xygrid">
 		<div class="xygrid">
