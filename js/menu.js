@@ -414,7 +414,7 @@ Vue.component('popup-menu', {
 				}
 			} else {
 				if ((typeof this.currentMenu.currentItem().action) == 'function') {
-					this.currentMenu.currentItem().action();
+					this.currentMenu.currentItem().action(index);
 				}
 			}
 		},
