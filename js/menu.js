@@ -8,10 +8,10 @@ class PopupMenu {
 
 	/**
 	 *
-	 * @param {string} title
-	 * @param {string} subtitle
-	 * @param {MenuItem[]} items
-	 * @param {Number} limit
+	 * @param {string} title Title
+	 * @param {string} subtitle Subtitle
+	 * @param {MenuItem[]} items Menu items
+	 * @param {Number} limit Maximum visible items (default: 7)
 	 */
 	constructor(title, subtitle, items, limit) {
 		this.title = title || '';
@@ -30,6 +30,9 @@ class PopupMenu {
 
 	// methods
 
+	/**
+	 * @returns {MenuItem}
+	 */
 	currentItem() {
 		return this.items[this.index];
 	}
@@ -39,12 +42,9 @@ class PopupMenu {
 	}
 
 	getStatByName(name) {
-		this.stats.forEach(function(o) {
-			if (o.name === name)
-				return o;
+		return this.stats.find((v) => {
+			return v.name === name;
 		});
-
-		return null;
 	}
 
 	setSliderValue(value) {
@@ -81,37 +81,33 @@ class PopupMenu {
 	}
 
 	nextSelectionItem() {
-		var item = this.currentItem();
+		let item = this.currentItem();
 
 		if (Object.prototype.toString.call(item.value) !== '[object Array]')
 			return;
 
 		item.index++;
 
-		if (item.index > item.value.length - 1) {
+		if (item.index > item.value.length - 1)
 			item.index = 0;
-		}
 
-		if ((typeof item.onChange) === 'function') {
+		if ((typeof item.onChange) === 'function')
 			item.onChange(item.index, item.value[item.index]);
-		}
 	}
 
 	prevSelectionItem() {
-		var item = this.currentItem();
+		let item = this.currentItem();
 
 		if (Object.prototype.toString.call(item.value) !== '[object Array]')
 			return;
 
 		item.index--;
 
-		if (item.index < 0) {
+		if (item.index < 0)
 			item.index = item.value.length - 1;
-		}
 
-		if ((typeof item.onChange) === 'function') {
+		if ((typeof item.onChange) === 'function')
 			item.onChange(item.index, item.value[item.index]);
-		}
 	}
 
 	// modular methods
@@ -171,9 +167,9 @@ class MenuItem {
 
 	/**
 	 *
-	 * @param {string} name
-	 * @param {string|string[]} value
-	 * @param {string} help
+	 * @param {string} name Title
+	 * @param {string|string[]} value Menu item value
+	 * @param {string} help Help text
 	 */
 	constructor(name, value, help) {
 		this.key   = name;
@@ -187,18 +183,29 @@ class MenuItem {
 		this.onChange = null;
 	}
 
+	/**
+	 * On click event
+	 * @param {(index: Number) => void} callback 
+	 */
 	Click(callback) {
 		this.action = callback;
 
 		return this;
 	}
 
+	/**
+	 * Indicates that when clicking this item you will be returned to the previous menu
+	 */
 	Back() {
 		this.submenu = true;
 
 		return this;
 	}
 
+	/**
+	 * Called when selection is changed when having a multiple items
+	 * @param {(index: Number, name: String) => void} callback 
+	 */
 	SelectionChanged(callback) {
 		this.onChange = callback;
 
@@ -211,6 +218,10 @@ class MenuItem {
 		return this;
 	}
 
+	/**
+	 * Opens a specified menu when clicked
+	 * @param {PopupMenu} menu What submenu to open
+	 */
 	Submenu(menu) {
 		this.submenu = menu;
 
@@ -222,9 +233,9 @@ class MenuStatItem {
 
 	/**
 	 *
-	 * @param {string} name
-	 * @param {Number} value
-	 * @param {Number} levels
+	 * @param {string} name Title
+	 * @param {Number} value Default value
+	 * @param {Number} levels 
 	 * @param {Number} width
 	 */
 	constructor(name, value, levels, width) {
@@ -383,6 +394,15 @@ function getElementPosition(el) {
 	};
 }
 
+let KeyCode = {
+	Up: 38,
+	Down: 40,
+	Left: 37,
+	Right: 39,
+	Enter: 13,
+	Backspace: 8
+}
+
 Vue.component('popup-menu', {
 	template: '#popup-menu',
 	props: {
@@ -498,20 +518,20 @@ Vue.component('popup-menu', {
 
 		window.addEventListener('keyup', function(e) {
 
-			if (e.keyCode == 38) { // up
+			if (e.keyCode == KeyCode.Up) {
 				self.currentMenu.index--;
-			} else if (e.keyCode == 40) { // down
+			} else if (e.keyCode == KeyCode.Down) {
 				self.currentMenu.index++;
-			} else if (e.keyCode == 13) { // enter
+			} else if (e.keyCode == KeyCode.Enter) {
 				self.processClick(self.currentMenu.index);
-			} else if (e.keyCode == 8) { // backspace
+			} else if (e.keyCode == KeyCode.Backspace) {
 				self.returnBack();
 			}
 
 			if (self.currentMenu.currentItem() != null) {
-				if (e.keyCode == 37) { // left
+				if (e.keyCode == KeyCode.Left) {
 					self.currentMenu.prevSelectionItem();
-				} else if (e.keyCode == 39) { // right
+				} else if (e.keyCode == KeyCode.Right) {
 					self.currentMenu.nextSelectionItem();
 				}
 			}
