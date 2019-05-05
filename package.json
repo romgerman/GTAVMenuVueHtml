@@ -1,0 +1,30 @@
+{
+  "name": "gtavmenuvuehtml",
+  "version": "1.0.0",
+  "description": "Replica of GTA V popup menu build with Vue.js",
+  "private": true,
+  "scripts": {
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/romgerman/GTAVMenuVueHtml.git"
+  },
+  "author": "romgerman",
+  "license": "WTFPL",
+  "bugs": {
+    "url": "https://github.com/romgerman/GTAVMenuVueHtml/issues"
+  },
+  "homepage": "https://github.com/romgerman/GTAVMenuVueHtml#readme",
+  "dependencies": {
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.30.0",
+    "webpack-cli": "^3.3.2"
+  }
+}

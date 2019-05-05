@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="css/reset.css" />
+	<link rel="stylesheet" type="text/css" href="css/menu.css" />
+
+	<!-- styles to test -->
+	<style type="text/css">
+	body
+	{
+		font-family: Arial;
+		background: url('testback.jpg');
+		overflow: hidden;
+	}
+
+	#container
+	{
+		width: 1020px;
+		margin: 0 auto;
+	}
+
+	.popup-menu
+	{
+		margin: 100px auto;
+		box-shadow: 0 0 20px rgba(0, 0, 0, 0.7); /* just looks nice in example */
+	}
+	</style>
+</head>
+<body>
+
+	<div id="container">
+
+		<!-- HERE GOES POPUP MENU HTML -->
+
+		<popup-menu v-bind:menu="menuData"></popup-menu>
+
+		<!-- HERE POPUP MENU HTML ENDS -->
+
+	</div>
+
+	<script type="text/javascript" src="js/app.js"></script>
+
+</body>
+</html>

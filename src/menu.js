@@ -4,10 +4,14 @@
 Original Repo: https://github.com/romgerman/GTAVMenuVueHtml
 ------------------------------------------------------------ */
 
+/* -----------------------------------
+----------- Helper classes -----------
+-------------------------------------- */
+
 class PopupMenu {
 
 	/**
-	 *
+	 * 
 	 * @param {string} title Title
 	 * @param {string} subtitle Subtitle
 	 * @param {MenuItem[]} items Menu items
@@ -246,9 +250,15 @@ class MenuStatItem {
 	}
 }
 
+module.exports = {
+	PopupMenu,
+	MenuItem,
+	MenuStatItem
+}
+
 // VUE COMPONENTS
 
-Vue.component('selection', {
+/*Vue.component('selection', {
 	template: '#selection',
 	props: {
 		index: {
@@ -593,4 +603,4 @@ Vue.component('popup-menu', {
 			}
 		}
 	}
-});
+});*/
